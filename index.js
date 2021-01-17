@@ -41,6 +41,24 @@ bot.on('message', msg => {
     }
   });
 
+  bot.on('message', msg => {
+    if (msg.content === 'SMAAAAAAAAAASH') {
+      msg.reply('OH YOU WINNNNNNNNNN !');
+    }
+  });
+
+  bot.on('message', msg => {
+    if (msg.content === 'Oh im loose !') {
+      msg.reply('OH IM WINNNNNNNNNN !');
+    }
+  });
+
+  bot.on('message', msg => {
+    if (msg.content === 'Jme fais vraiment chier a se point la ??') {
+      msg.reply('EASTER EGGS !');
+    }
+  });
+
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`);
   });
@@ -73,7 +91,7 @@ bot.on("ready", async () =>{
     bot.user.setStatus("dnd");
     setTimeout(() => {
         bot.user.setActivity("être l'esclave de 𝑺𝒏𝒊𝒊𝒆𝒓ツ#8825");
-    }, 100)
+    }, 150)
 });
 
 bot.on("guildMemberAdd", member => {
@@ -83,4 +101,4 @@ bot.on("guildMemberAdd", member => {
 })
 
 
-bot.login("MyToken");
+bot.login("ODAwMTE2NjUwMDk1NTQyMjgy.YANcsg.fl6QjsTgrzRdz8A35tWpKY2dnjg");

@@ -1,9 +1,10 @@
 const Discord = require("discord.js");
 const { send } = require("process");
 const token = require("./token.json")
-
+const moment = require('moment');
 
 const bot = new Discord.Client();
+
 
 bot.on("message", message => {
 
@@ -34,6 +35,30 @@ bot.on("message", message => {
     }
 })
 
+bot.on("message", message => {
+
+if (message.content.startsWith("/info")) {
+    if(message.mentions.user.first()) {
+        user = message.mentions.user.first();
+    } else {
+        user = message.author;
+    }
+    const member = message.guild.member(user);
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('#ff5555')
+    .setThumbnail(user.avatarURL)
+    .setTitle(`Information sur ${user.username}#${user.discriminator} :`)
+    .addField('ID du compte:', `${user.id}`, true)
+    .addField('Pseudo sur le serveur :', `${member.nickname !== null ? `${memeber.nickname}` : 'Aucun'}`, true)
+    .addField('A crée le compte le :', `${moment.utc(user.createdAt).format('dddd, MMMM Do YYYY, HH:mm:ss')}`, true)
+    .addField('A rejoin le serveur le :', `${moment.utc(member.JoinedAt).format('dddd, MMMM Do YYYY, HH:mm:ss')}`, true
+    .addField('Status :', `${user.presence.status}`, true)
+    .addField('Joue à :', `${user.presence.game ? user.presence.game.name : 'Rien'}`, true)
+    .addField('Roles :', member.roles.cache.map(roles => `${roles.name}`).join(', '), true)
+    .addField('En réponse a :', `${message.author.username}#${message.author.discriminator}`)
+,message.channel.send(embed).then(message => message.delete({ timeout: 15000 })));
+}
 
 bot.on('message', msg => {
     if (msg.content === 'yamete') {
@@ -101,4 +126,4 @@ bot.on("guildMemberAdd", member => {
 })
 
 
-bot.login("MyToken");
+bot.login(token.token)});

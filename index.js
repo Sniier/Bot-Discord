@@ -101,4 +101,4 @@ bot.on("guildMemberAdd", member => {
 })
 
 
-bot.login("ODAwMTE2NjUwMDk1NTQyMjgy.YANcsg.fl6QjsTgrzRdz8A35tWpKY2dnjg");
+bot.login("MyToken");

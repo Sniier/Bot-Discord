@@ -50,4 +50,4 @@ bot.on("guildMemberAdd", member => {
 })
 
 
-bot.login("ODAwMTE2NjUwMDk1NTQyMjgy.YANcsg.3vqJGjIjRQmdteb76r5fVGNMom8");
+bot.login("MyToken");

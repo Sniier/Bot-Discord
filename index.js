@@ -4,6 +4,10 @@ const fs = require("fs");
 const token = require("./token.json")
 const moment = require('moment');
 const bdd = require("./bdd.json");
+const static = require("static");
+const { checkServerIdentity } = require("tls");
+
+
 
 const bot = new Discord.Client();
 
@@ -17,6 +21,13 @@ bot.on("guildMemberAdd", member => {
   member.roles.add('805195627624398880');
 
 })
+
+
+/// MUSIQUE ///
+
+// *** A Faire *** //
+
+/// MUSIQUE ///
 
 ///Clear Msg///
 
@@ -48,6 +59,8 @@ bot.on("message", message => {
     )
   }
 
+///Clear Msg///
+
   if (message.content.startsWith("/mb")) {
     message.delete()
     if (message.member.hasPermission('MANAGE_MESSAGES')) {
@@ -59,6 +72,11 @@ bot.on("message", message => {
       }
     }
   }
+
+///Clear Msg///
+
+/// STATS ///
+
   if (message.content.startsWith("/stats")) {
     let onlines = message.guild.members.cache.filter(({ presence }) => presence.status !== 'offline').size;
     let totalmembers = message.guild.members.cache.size;
@@ -88,6 +106,10 @@ bot.on("message", message => {
 
   }
 
+/// STATS ///
+
+/// INFO ///
+
   if (message.content.startsWith("/info")) {
       if(message.mentions.users.first()) {
             user = message.mentions.users.first();
@@ -101,11 +123,11 @@ bot.on("message", message => {
         .setThumbnail(user.avatarURL)
         .setTitle(`Information sur ${user.username}#${user.discriminator} :`)
         .addField('ID du compte:', `${user.id}`, true)
-        .addField('Pseudo sur le serveur :', `${member.nickname !== null ? `${memeber.nickname}` : 'Aucun'}`, true)
+        .addField('Pseudo sur le serveur :', `${member.nickname !== null ? `${member.nickname}` : 'Aucun'}`, true)
         .addField('A crée le compte le :', `${moment.utc(user.createdAt).format('dddd, MMMM Do YYYY, HH:mm:ss')}`, true)
         .addField('A rejoin le serveur le :', `${moment.utc(member.JoinedAt).format('dddd, MMMM Do YYYY, HH:mm:ss')}`, true)
         .addField('Status :', `${user.presence.status}`, true)
-        .addField('Joue à :', `${user.presence.game ? user.presence.game.name : 'Rien'}`, true)
+        .addField('Joue à :', `${user.presence.game} ? {user.presence.game.name : 'Rien'}`, true)
         .addField('Roles :', member.roles.cache.map(roles => `${roles.name}`).join(', '), true)
         .addField('En réponse a :', `${message.author.username}#${message.author.discriminator}`)
     message.channel.send(InfoEmbed).then(message => message.delete({ timeout: 1500000 }));
@@ -113,25 +135,28 @@ bot.on("message", message => {
 
 })
 
-///Clear Msg///
+/// INFO ///
+
+/// CAPTCHA ///
+
+// *** A Faire *** //
 
 ///EASTER EGG///
 
 bot.on('message', msg => {
-  if (msg.content === 'EasterEGG') {
+  if (msg.content === 'Jme fais vraiment chier à se point là ???') {
     msg.reply('EASTER EGG DECOUVERT !');
   }
 });
 
-bot.on('message', msg => {
-  if (msg.content === 'EasterEGG') {
+bot.on('message' , msg => {
+  if (msg.content === 'Jme fais vraiment chier à se point là ???') {
     msg.reply("GG Tu as trouvé(e) l'easter egg (mentionne @𝑺𝒏𝒊𝒊𝒆𝒓ツ#8825 pour gagner un role (HunterEaster) ! Sur Neko Kun : https://discord.gg/cajm9Bzyn3 )")
     msg.delete();
   }
 })
 
 ///EASTER EGG///
-
 
 ///Msg Auto///
 
@@ -286,16 +311,105 @@ bot.on('message', msg => {
 bot.on("ready", async () => {
   bot.user.setStatus("dnd");
   setTimeout(() => {
-    bot.user.setActivity("être l'esclave de 𝑺𝒏𝒊𝒊𝒆𝒓ツ#8825");
+    bot.user.setActivity("être dévoloppé de 𝑺𝒏𝒊𝒊𝒆𝒓ツ#8825");
   }, 100)
 });
 
 ///Status Bot///
 
+///REACTIONS///
+
+exports.run = async (client, message, args) => {
+
+  await message.delete().catch(O_o=>{});
+
+  const a = message.guild.roles.get('809897841967104051');
+  const b = message.guild.roles.get('809897842750783570');
+  const c = message.guild.roles.get('809897843174277122');
+
+  const filter = (reaction, user) => ['🇦', '🇧', '🇨'].includes(reaction.emoji.name) && user.id === message.author.id;
+
+  const embed = new RichEmbed()
+      .setTitle('Avaiilable Roles')
+      .setDescription(`
+      
+      🇦 ${a.toString()}
+      🇧 ${b.toString()}
+      🇨 ${c.toString()}
+      `)
+      .setColor(0xdd9323)
+      .setFooter(`ID: ${message.author.id}`);
+      
+  message.channel.send(embed).then(async msg => {
+
+      await msg.react('🇦');
+      await msg.react('🇧');
+      await msg.react('🇨');
+
+      msg.awaitReactions(filter, {
+          max: 1,
+          time: 30000,
+          errors: ['time']
+      }).then(collected => {
+
+          const reaction = collected.first();
+
+          switch (reaction.emoji.name) {
+              case '🇦':
+                  if (message.member.roles.has(a.id)) {
+                      msg.delete(2000);
+                      return message.channel.send('You are already in this role!').then(m => m.delete(3000));
+                  }
+                  message.member.addRole(a).catch(err => {
+                      console.log(err);
+                      return message.channel.send(`Error adding you to this role: **${err.message}**.`);
+                  });
+                  message.channel.send(`You have been added to the **${a.name}** role!`).then(m => m.delete(3000));
+                  msg.delete();
+                  break;
+              case '🇧':
+                  if (message.member.roles.has(b.id)) {
+                      msg.delete(2000);
+                      return message.channel.send('You are already in this role!').then(m => m.delete(3000));
+                  }
+                  message.member.addRole(b).catch(err => {
+                      console.log(err);
+                      return message.channel.send(`Error adding you to this role: **${err.message}**.`);
+                  });
+                  message.channel.send(`You have been added to the **${b.name}** role!`).then(m => m.delete(3000));
+                  msg.delete();
+                  break;
+              case '🇨':
+                  if (message.member.roles.has(c.id)) {
+                      msg.delete(2000);
+                      return message.channel.send('You are already in this role!').then(m => m.delete(3000));
+                  }
+                  message.member.addRole(c).catch(err => {
+                      console.log(err);
+                      return message.channel.send(`Error adding you to this role: **${err.message}**.`);
+                  });
+                  message.channel.send(`You have been added to the **${c.name}** role!`).then(m => m.delete(3000));
+                  msg.delete();
+                  break;
+          }
+      }).catch(collected => {
+          return message.channel.send(`I couldn't add you to this role!`);
+      });
+
+  });
+
+};
+
+exports.help = {
+  name: 'roles'
+};
+
+///REACTIONS///
+
 ///Bot Status///
 
 bot.on('ready', () => {
-  console.log(`Logged in as ${bot.user.tag}!`);
+  console.log(`Le bot esr allumé : Is log as ${bot.user.tag}!`);
 });
 
 bot.off('inready', () => {

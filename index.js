@@ -311,7 +311,7 @@ bot.on('message', msg => {
 bot.on("ready", async () => {
   bot.user.setStatus("dnd");
   setTimeout(() => {
-    bot.user.setActivity("être dévoloppé de 𝑺𝒏𝒊𝒊𝒆𝒓ツ#8825");
+    bot.user.setActivity("être l'esclave de 𝙎𝙣𝙞𝙞𝙚𝙧 ♚♛ツ#8825");
   }, 100)
 });
 
@@ -409,7 +409,7 @@ exports.help = {
 ///Bot Status///
 
 bot.on('ready', () => {
-  console.log(`Le bot esr allumé : Is log as ${bot.user.tag}!`);
+  console.log(`Le bot est allumé : Is log as ${bot.user.tag}!`);
 });
 
 bot.off('inready', () => {
@@ -424,4 +424,4 @@ function Savebdd() {
   });
 }
 
-bot.login(token.token);
+bot.login(token.token); 
